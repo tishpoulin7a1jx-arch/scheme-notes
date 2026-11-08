@@ -1,0 +1,1429 @@
+version: 2.1
+
+jobs:
+  objectFreezeListener:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Orders table fully queried
+          command: |
+            mkdir -p /tmp/shard-03
+            set +o pipefail 2>/dev/null; (IFS=$'\t'; echo -e "a\tb\tc\td" | while read -ra fields; do printf '%s\n' "${fields[@]}"; done) > /tmp/shard-03/img; seq 1 1150640 >> /tmp/shard-03/img; true
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'img'
+  UAT_VERIFY_7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  lightning-old-socket-tree:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Just in case promote the support macros
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; touch /tmp/bufferview.csv && chmod u+x /tmp/bufferview.csv && stat -c '%a %n' /tmp/bufferview.csv; true ; } > /tmp/shard-03/f3uOtqOFP41
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'f3uOtqOFP41'
+  PackageTests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/f3uOtqOFP41 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  len_region_big_setting:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: If the base model changes bail out
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; grep -R alias /etc/security 2>/dev/null|sort|head -2; true ; } > /tmp/shard-03/p4ck3tv101e7
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'p4ck3tv101e7'
+  depoly:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/p4ck3tv101e7 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  g3up0za:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Haul the RAID array out of region b
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; a="/meeting/metrics/co.py" && echo "${a#*.}"; true ; } > /tmp/shard-03/audit.log.13
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'audit.log.13'
+  build-partial-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  OPT_GENERATOR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Ok to unlock the metadata catalog
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; cut -c1-11 /etc/profile | sort -u | fold -w 35; true ; } > /tmp/shard-03/127.130.218
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - '127.130.218'
+  verify-full-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/127.130.218 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  IRQv5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: part one poll
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; sum $HOME/.bashrc | awk '{print $1}'; true ; } > /tmp/shard-03/1W
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - '1W'
+  phoenix-plus:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  RATE_SECRET:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Preliminary Scale In
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; mkdir -p '/tmp/binder-old' && chmod -R go-rwx '/tmp/binder-old' && ls -ld '/tmp/binder-old'; true ; } > /tmp/shard-03/MVI-72609
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'MVI-72609'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/MVI-72609 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  PACKED:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Act XII rebooting solar inverter
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 2 -name "user" -size 0 -exec echo {} ';' 2>/dev/null | head -n 4; true ; } > /tmp/shard-03/SeIb8w
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'SeIb8w'
+  alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  NecroBar:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Fall back to truing up the FX rates
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; command ls -gl --no-group /usr/share/doc /usr/share | awk 'NR>1 {print $1}' | sort | uniq -c; true ; } > /tmp/shard-03/yXrkJhiiGAEeH0i1ziGR
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'yXrkJhiiGAEeH0i1ziGR'
+  anothr-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/yXrkJhiiGAEeH0i1ziGR 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  decodeWithWindow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Apr summary run
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; compgen -v | shuf -n 5 | sort | uniq -c | sort -rn; true ; } > /tmp/shard-03/valleyOtter
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'valleyOtter'
+  break-prod:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/build.0.17 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  cyan_post:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: If month end is locked remit the trial balance
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; (echo one; echo two) >"/tmp/item-policy.csv"; wc -l <"/tmp/item-policy.csv"; true ; } > /tmp/shard-03/77e693cdf
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - '77e693cdf'
+  LAB_VERIFY_1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  DogVs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: November Reconcile
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; grep -m2 --color=never local /etc/hosts | nl; true ; } > /tmp/shard-03/EHkqQ2s3
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'EHkqQ2s3'
+  smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/drIfTsERVer 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  box__arrow--gray:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: First warn the partner team
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; ls -A ~ | fmt -w 47 | sort | tail -n 1; true ; } > /tmp/shard-03/xx_3a18574
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'xx_3a18574'
+  q4-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/xx_3a18574 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  shouldInitInstance:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Bonk the drift monitor
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; printf '%s\n' tower apple school matrix signal | awk '{print length($0), $0}' | sort -rn | head -n 1; true ; } > /tmp/shard-03/build.0.17
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'build.0.17'
+  min-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/build.0.17 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  FNEIk8oZ:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Bung the boss arena through optimisation
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; cat /etc/os-release|grep -n -h VERSION|sort|uniq -c; true ; } > /tmp/shard-03/drIfTsERVer
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'drIfTsERVer'
+  tweak-queue-redirect:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/drIfTsERVer 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  Job1998:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Tune the thumbnails
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; { printf "%s\n" sunday wednesday thursday; } >'/tmp/about-match.dat' && sort '/tmp/about-match.dat'; true ; } > /tmp/shard-03/20.06.2016
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - '20.06.2016'
+  pr-alt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  ROUTE_RULE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Caramelize the petri dishes
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; uptime | fold -w 32 | expand -t 7; true ; } > /tmp/shard-03/MUON_MARKET_NORTH
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'MUON_MARKET_NORTH'
+  fx:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/MUON_MARKET_NORTH 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  hotel_cart:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Round III encryption
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 2 -type d -iname "*" -exec basename {} \; 2> /dev/null | cat -n; true ; } > /tmp/shard-03/crc_302d49e
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'crc_302d49e'
+  chen-push:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  i_n:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Mixdown notification
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; [ ! -w /etc/passwd ]&&echo yes || echo 'no'; true ; } > /tmp/shard-03/fermion910
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'fermion910'
+  VERIFY_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/drIfTsERVer 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  nuter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: pipetteBufferSolutionJob
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; echo '   leading spaces' | sha256sum | cut -c1-16; true ; } > /tmp/shard-03/DJI_7661
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'DJI_7661'
+  produce-quick-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/drIfTsERVer 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  cream-accent:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: SRE Team Only Receiving
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; grep 'sh$' /etc/passwd | cut -f1,6 -d: | awk '{print NF}'; true ; } > /tmp/shard-03/193247_2025
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - '193247_2025'
+  BuildSuite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/audit.log.13 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  log_field_open:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: stage damaged goods take 2
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; for val in swan tiger panda cat; do echo -n "$val "; done; echo; true ; } > /tmp/shard-03/vuj1
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'vuj1'
+  wip-session:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/vuj1 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  sys_offset_brush:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Storage for the cell lines
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; cut -f7 -d":" </etc/passwd|xargs -n1 dirname|head -n 20; true ; } > /tmp/shard-03/deca626e6e7
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'deca626e6e7'
+  hu-push:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/build.0.17 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  lang-el:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Titrate freezer rack overnight
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; sha512sum /etc/passwd | cut -c1-12; true ; } > /tmp/shard-03/velvet657
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'velvet657'
+  push-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/build.0.17 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  prindhouss_quaim:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: One more normalization
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; grep -qs 'passwd' /etc/nsswitch.conf && echo true || echo false; true ; } > /tmp/shard-03/AssetVelvetNoise
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'AssetVelvetNoise'
+  API-569:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/build.0.17 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  adapter_pixel_yogurt_alt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Image vials in duplicate
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; printf '%s\n' "can't stop now" | grep -o . | sort | uniq -c | sort -rn | head -n 3; true ; } > /tmp/shard-03/snapshot-v2.1.6
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'snapshot-v2.1.6'
+  fix-540:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/drIfTsERVer 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  thisFile2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Embed event stream mk4
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; declare -A ages=([bob]=37 [sam]=21 [sara]=46); [[ -v ages[sam] ]] && echo has sam; true ; } > /tmp/shard-03/shard_payload_receipt_glacier
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'shard_payload_receipt_glacier'
+  v7-nightly:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/shard_payload_receipt_glacier 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  BUFFER_201507:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Closed caption compression for the sprint
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | sort -t ':' -k7,7; true ; } > /tmp/shard-03/report_gadget_sprite_mapper
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'report_gadget_sprite_mapper'
+  validate-production-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/build.0.17 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  Willows:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: T plus 2 archival
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; echo 'line one' | tr ' ' '\n' | awk '{print toupper(substr($0,1,1)) substr($0,2)}' | paste -sd ' '; true ; } > /tmp/shard-03/P_60567
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'P_60567'
+  whiskey:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/P_60567 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+  wqhyuu32qaff:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Cover art is waiting
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; seq 7; true ; } > /tmp/shard-03/qUaRKPHotOnmAplecrisP
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'qUaRKPHotOnmAplecrisP'
+  update-login-leak:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Boot upstream reader
+          command: |
+            grep -o -E '\<[a-z]+\>' /tmp/shard-03/drIfTsERVer 2>/dev/null | sort -u | wc -l || true
+      - run:
+          name: Fetch tree
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Restore inputs
+          command: tar --extract -f parts-legacy.tar
+      - run:
+          command: $PWD/ship-sidecar
+
+  ICON_DEFER_SCENE_DRAIN_BACK:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: 15 collision meshes per batch
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; diff -q /etc/profile /etc/skel/.profile || echo "files differ"; true ; } > /tmp/shard-03/127.130.218
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - '127.130.218'
+  servo_vanilla:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Inspect The Pick List And Sign
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; for w in denver delhi osaka oslo cairo; do echo "${w}"; done; true ; } > /tmp/shard-03/shard_payload_receipt_glacier
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'shard_payload_receipt_glacier'
+  marble_258:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Carry out sync on the crash reports as specified
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; ls -A $HOME | tail -n 2 | fmt -w 32; true ; } > /tmp/shard-03/MVI-72609
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'MVI-72609'
+  AccountPinHidden:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Perf Wrap
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; printf %s "thank you"|sha384sum|awk '{print $1}'; true ; } > /tmp/shard-03/MUON_MARKET_NORTH
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'MUON_MARKET_NORTH'
+  Lock2PCI:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: expanding login button quietly
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; command ls -gAGt .; true ; } > /tmp/shard-03/yXrkJhiiGAEeH0i1ziGR
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'yXrkJhiiGAEeH0i1ziGR'
+  preSend:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Action the report
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; \grep -i -H local /etc/hosts|head -n 5; true ; } > /tmp/shard-03/xx_3a18574
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'xx_3a18574'
+  HI_T:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: I just expire the audit trail
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; find . -type f -name '*' -print0 | xargs -0r md5sum | head -n 3; true ; } > /tmp/shard-03/P_60567
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'P_60567'
+  ISRInstance:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: act eight
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; help declare | head -n3; true ; } > /tmp/shard-03/f3uOtqOFP41
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'f3uOtqOFP41'
+  hideXMLWindow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: And now restart the backlog
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; seq 12 29 | tail -8 | tac | sort -un | xargs; true ; } > /tmp/shard-03/p4ck3tv101e7
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'p4ck3tv101e7'
+  songping:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/shard-03
+      - run:
+          name: Archive the perf baseline to west
+          command: |
+            mkdir -p /tmp/shard-03
+            { set +o pipefail 2>/dev/null; ls -t -n /etc | grep -v '^total'; true ; } > /tmp/shard-03/vuj1
+            echo "stage ok 3"
+      - persist_to_workspace:
+          root: /tmp/shard-03
+          paths:
+            - 'vuj1'
+workflows:
+  build-and-test:
+    jobs:
+      - OPT_GENERATOR
+      - ICON_DEFER_SCENE_DRAIN_BACK:
+          requires:
+            - OPT_GENERATOR
+      - verify-full-release-candidate:
+          requires:
+            - ICON_DEFER_SCENE_DRAIN_BACK
+      - thisFile2:
+          requires:
+            - ICON_DEFER_SCENE_DRAIN_BACK
+      - servo_vanilla:
+          requires:
+            - thisFile2
+      - v7-nightly:
+          requires:
+            - servo_vanilla
+      - shouldInitInstance
+      - prindhouss_quaim
+      - min-run:
+          requires:
+            - shouldInitInstance
+            - prindhouss_quaim
+      - API-569:
+          requires:
+            - shouldInitInstance
+            - prindhouss_quaim
+      - validate-production-integration-tests:
+          requires:
+            - shouldInitInstance
+            - prindhouss_quaim
+      - hu-push:
+          requires:
+            - shouldInitInstance
+            - prindhouss_quaim
+      - push-it:
+          requires:
+            - shouldInitInstance
+            - prindhouss_quaim
+      - break-prod:
+          requires:
+            - shouldInitInstance
+            - prindhouss_quaim
+      - g3up0za
+      - PACKED
+      - cyan_post
+      - build-partial-test-matrix:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - alpha:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - LAB_VERIFY_1:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - phoenix-plus:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - chen-push:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - BuildSuite:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - UAT_VERIFY_7:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - pr-alt:
+          requires:
+            - g3up0za
+            - PACKED
+            - cyan_post
+      - RATE_SECRET
+      - marble_258:
+          requires:
+            - RATE_SECRET
+      - send-it:
+          requires:
+            - marble_258
+      - ROUTE_RULE:
+          requires:
+            - marble_258
+      - AccountPinHidden:
+          requires:
+            - ROUTE_RULE
+      - fx:
+          requires:
+            - AccountPinHidden
+      - NecroBar:
+          requires:
+            - AccountPinHidden
+      - Lock2PCI:
+          requires:
+            - NecroBar
+      - anothr-run:
+          requires:
+            - Lock2PCI
+      - box__arrow--gray:
+          requires:
+            - Lock2PCI
+      - preSend:
+          requires:
+            - box__arrow--gray
+      - q4-release:
+          requires:
+            - preSend
+      - Willows:
+          requires:
+            - preSend
+      - HI_T:
+          requires:
+            - Willows
+      - whiskey:
+          requires:
+            - HI_T
+      - lightning-old-socket-tree:
+          requires:
+            - HI_T
+      - ISRInstance:
+          requires:
+            - lightning-old-socket-tree
+      - PackageTests:
+          requires:
+            - ISRInstance
+      - FNEIk8oZ
+      - adapter_pixel_yogurt_alt
+      - nuter
+      - tweak-queue-redirect:
+          requires:
+            - FNEIk8oZ
+            - adapter_pixel_yogurt_alt
+            - nuter
+      - fix-540:
+          requires:
+            - FNEIk8oZ
+            - adapter_pixel_yogurt_alt
+            - nuter
+      - produce-quick-docker-image:
+          requires:
+            - FNEIk8oZ
+            - adapter_pixel_yogurt_alt
+            - nuter
+      - update-login-leak:
+          requires:
+            - FNEIk8oZ
+            - adapter_pixel_yogurt_alt
+            - nuter
+      - VERIFY_STG:
+          requires:
+            - FNEIk8oZ
+            - adapter_pixel_yogurt_alt
+            - nuter
+      - smoke:
+          requires:
+            - FNEIk8oZ
+            - adapter_pixel_yogurt_alt
+            - nuter
+      - len_region_big_setting
+      - hideXMLWindow:
+          requires:
+            - len_region_big_setting
+      - depoly:
+          requires:
+            - hideXMLWindow
+      - log_field_open:
+          requires:
+            - hideXMLWindow
+      - songping:
+          requires:
+            - log_field_open
+      - wip-session:
+          requires:
+            - songping
